@@ -8,7 +8,7 @@
     "start": "tsc && npm run dev",
     "dev": "npx tsx app.ts",
     "local": "nodemon app.ts",
-    "lint": "eslint .",
+    "lint": "eslint . --config eslint.config.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
