@@ -13,7 +13,10 @@
     "skipLibCheck": true,                             /* Skip type checking all .d.ts files. */
     "baseUrl": "./src", 
     "paths": {
-      "@config/*": ["config/*"] 
+      "@config/*": ["config/*"],
+      "@util/*": ["utils/*"],
+      "@models/*": ["models/*"],
+      "@data/*": ["data/*"]
     }
   }
 }

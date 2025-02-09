@@ -6,7 +6,7 @@ const {
 
 export const ServerConfig = {
   port: parseInt(PORT || '8080'),
-  env: ENV
+  env: ENV || ""
 };
 
 export const Cors = {
