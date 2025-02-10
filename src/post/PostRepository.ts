@@ -7,22 +7,28 @@ import { PageRequest } from "@models/Page.types";
 const log = createLogger({ fileName: 'PostRepository' });
 
 export class PostRepository {
-  static async getByCategoryId(categoryId: string, pageRequest: PageRequest): Promise<Array<Post> | null> {
+  static async getByCategoryId(categoryId: string, pageRequest: PageRequest | null): Promise<Array<Post> | null> {
     try {
-      const { orderKey = 'createdAt', order = 'desc', limit = 10, lastItem } = pageRequest;
       if (firestoreRef === null) {
         log.error("Fallo en la conexión a bd");
         return null;
       }
+      
+      
+      const collectionRef = firestoreRef.collection(Collections.POST_COLLECTION)
+      .where("categoryId", "==", categoryId)
 
-      const limitInt = parseInt(`${limit}`, 10);
+      if (pageRequest && Object.keys(pageRequest).length > 0) {
+        const { orderKey = 'createdAt', order = 'desc', limit = 10, lastItem } = pageRequest || {};
+        const limitInt = parseInt(`${limit}`, 10);
 
-      const dbResponse = await firestoreRef.collection(Collections.POST_COLLECTION)
-        .where("categoryId", "==", categoryId)
+        collectionRef
         .orderBy(orderKey, order as FirebaseFirestore.OrderByDirection )
         .startAfter(lastItem)
         .limit(limitInt)
-        .get();
+      }
+      
+      const dbResponse = await collectionRef.get();
 
       return dbResponse.docs.map((doc) => doc.data() as Post);
     } catch (e) {
