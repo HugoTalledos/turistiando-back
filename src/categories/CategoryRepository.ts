@@ -16,7 +16,7 @@ export class CategoryRepository {
       const collectionRef = await firestoreRef.collection(Collections.CATEGORY_COLLECTION)
 
       if (page) {
-        const { orderKey = 'createdAt', order = 'desc', limit = 10, lastItem } = page;
+        const { orderKey = 'createdAt', order = 'desc', limit = 10, lastItem = '' } = page;
         const limitInt = parseInt(`${limit}`, 10);
         collectionRef
           .orderBy(orderKey, order as FirebaseFirestore.OrderByDirection)

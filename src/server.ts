@@ -22,7 +22,7 @@ export default class Server {
     app.use(express.urlencoded({ extended: true }));
 
     app.use('/api/post', postController);
-    app.use('api/category', categoryController)
+    app.use('/api/category', categoryController)
   }
 }
 

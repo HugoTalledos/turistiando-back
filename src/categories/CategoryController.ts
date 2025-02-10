@@ -7,7 +7,7 @@ const log = createLogger({ fileName: 'CategoryController '});
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     log.info(Messages.START_SERVICE, Messages.GET_CATEGORIES);
     const response = await getAllCategories(req.body);
     res.status(response.code).send(response);
