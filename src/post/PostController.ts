@@ -26,10 +26,10 @@ router.post("/category/:categoryId", async (req, res) => {
 });
 
 router.put("/like", async (req, res) => {
-    log.info(Messages.START_SERVICE, Messages.GET_POSTS_BY_CATEGORY);
+    log.info(Messages.START_SERVICE, Messages.COUNTER_LIKES);
     const response = await countLikesForPost(req.body);
     res.status(response.code).send(response);
-    log.info(Messages.END_SERVICE, Messages.GET_POSTS_BY_CATEGORY);
+    log.info(Messages.END_SERVICE, Messages.COUNTER_LIKES);
 })
 
 export const postController = router;
