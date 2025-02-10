@@ -27,7 +27,7 @@ export class PostRepository {
         .startAfter(lastItem)
         .limit(limitInt)
       }
-      
+
       const dbResponse = await collectionRef.get();
 
       return dbResponse.docs.map((doc) => doc.data() as Post);
@@ -74,7 +74,7 @@ export class PostRepository {
       const docData = await docRef.get();
 
       if (!docData.exists) {
-        log.warn("Post no encontrado {}", postId);
+        log.warn("Post no encontrado ", postId);
         return false;
       }
 

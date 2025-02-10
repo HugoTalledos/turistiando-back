@@ -42,11 +42,11 @@ export const getPostByCategory = async ({ categoryId, page }: { categoryId: stri
     }
 
     if (postList.length <= 0) {
-      log.warn("No se encontraron post relacionados a categoryId: {}", categoryId);
+      log.warn("No se encontraron post relacionados a categoryId: ", categoryId);
       return notResultFound();
     }
 
-    log.info("Post encontrados: {}", postList.length);
+    log.info("Post encontrados: ", postList.length);
     return successQuery<PostResponse[]>(postList);
   } catch (e) {
     log.error(e);
@@ -59,7 +59,7 @@ export const countLikesForPost = async ({ postId, state }: { postId: string, sta
     const updateStatus = await PostRepository.updateLikeNumber(postId, state);
 
     if (!updateStatus) {
-      log.warn("Fallo en la actualización de likes del post: {}", postId);
+      log.warn("Fallo en la actualización de likes del post: ", postId);
       return failQuery();
     }  
 

@@ -22,7 +22,7 @@ export const getAllCategories = async (page: PageRequest | undefined): Promise<A
       return notResultFound();
     }
 
-    log.info("Categorias encontradas: {}", categoryList.length);
+    log.info("Categorias encontradas: ", categoryList.length);
     return successQuery<CategoryResponse[]>(categoryList);
   } catch (e) {
     log.error("Error innesperado: ", e);
