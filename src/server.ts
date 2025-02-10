@@ -3,6 +3,7 @@ import express, { Application } from "express";
 import cors, { CorsOptions } from "cors";
 import { Cors, ServerConfig } from "@config/config";
 import { postController } from "post/PostController";
+import { categoryController } from "categories/CategoryController";
 
 export default class Server {
   constructor(app: Application) {
@@ -21,6 +22,7 @@ export default class Server {
     app.use(express.urlencoded({ extended: true }));
 
     app.use('/api/post', postController);
+    app.use('api/category', categoryController)
   }
 }
 

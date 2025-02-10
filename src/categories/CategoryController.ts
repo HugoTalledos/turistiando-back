@@ -15,4 +15,4 @@ router.get("/", async (req, res) => {
     log.info(Messages.END_SERVICE, Messages.GET_POST);
 });
 
-export const postController = router;
+export const categoryController = router;
