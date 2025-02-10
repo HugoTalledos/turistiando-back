@@ -3,9 +3,11 @@ export const Messages = {
     END_SERVICE: "------- Finaliza servicio de ",
     RESPONSE_SERVICE: "Respuesta --->",
     GET_POST: "Consulta de post por slug -------",
-    GET_POSTS_BY_CATEGORY: "Lista de post por categoria -------"
+    GET_POSTS_BY_CATEGORY: "Lista de post por categoria -------",
+    GET_CATEGORIES: "Lista de categorias"
 }
 
 export const Collections = {
-    POST_COLLECTION: 'post'
+    POST_COLLECTION: 'post',
+    CATEGORY_COLLECTION: 'category'
 }
