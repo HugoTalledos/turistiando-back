@@ -39,15 +39,16 @@ export class PostRepository {
       }
 
       const dbResponse = await firestoreRef.collection(Collections.POST_COLLECTION)
-        .doc(slug)
+        .where("slug", "==", slug)
+        .limit(1)
         .get();
 
-      if (!dbResponse.exists) {
+      if (dbResponse.empty) {
         log.warn(`Post con slug ${slug} no encontrado`);
         return null;
       }
       log.info("Post encontrado");
-      return dbResponse.data() as Post;
+      return dbResponse.docs[0].data() as Post;
     } catch (e) {
       log.error("Error innesperado: ", e);
       return null;
