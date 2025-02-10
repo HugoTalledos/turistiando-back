@@ -1,7 +1,7 @@
 import express from "express";
 import { Messages } from "@util/constants";
 import createLogger from "@config/logger";
-import { getPost, getPostByCategory } from "./PostService";
+import { countLikesForPost, getPost, getPostByCategory } from "./PostService";
 
 const log = createLogger({ fileName: 'PostController '});
 
@@ -24,5 +24,12 @@ router.post("/category/:categoryId", async (req, res) => {
     res.status(response.code).send(response);
     log.info(Messages.END_SERVICE, Messages.GET_POSTS_BY_CATEGORY);
 });
+
+router.put("/like", async (req, res) => {
+    log.info(Messages.START_SERVICE, Messages.GET_POSTS_BY_CATEGORY);
+    const response = await countLikesForPost(req.body);
+    res.status(response.code).send(response);
+    log.info(Messages.END_SERVICE, Messages.GET_POSTS_BY_CATEGORY);
+})
 
 export const postController = router;

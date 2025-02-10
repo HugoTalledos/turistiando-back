@@ -14,4 +14,6 @@ export interface PostResponse {
 
 export interface Post extends PostResponse {
     isDeleted: boolean
+    createdAt: string,
+    updatedAt: string
 }

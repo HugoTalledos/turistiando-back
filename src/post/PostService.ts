@@ -53,3 +53,20 @@ export const getPostByCategory = async ({ categoryId, page }: { categoryId: stri
     return failQuery();
   }
 }
+
+export const countLikesForPost = async ({ postId, state }: { postId: string, state: boolean }): Promise<APIResponse<boolean | null>> => {
+  try {
+    const updateStatus = await PostRepository.updateLikeNumber(postId, state);
+
+    if (!updateStatus) {
+      log.warn("Fallo en la actualización de likes del post: {}", postId);
+      return failQuery();
+    }  
+
+    log.info("Likes actualizados correctamente");
+    return successQuery(true);
+  } catch (e) {
+    log.error(e);
+    return failQuery();
+  }
+}
