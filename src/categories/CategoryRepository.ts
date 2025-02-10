@@ -28,7 +28,7 @@ export class CategoryRepository {
 
       return dbResponse.docs.map((doc) => doc.data() as Category);
     } catch (e) {
-      log.error("Error innesperado");
+      log.error("Error innesperado", e);
       return null;
     }
   }

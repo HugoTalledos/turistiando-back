@@ -83,7 +83,7 @@ export class PostRepository {
       log.info("Actualización de likes realizada");
       return true;
     } catch (e) {
-      log.error("Error innesperado");
+      log.error("Error innesperado", e);
       return null;
     }
   }
