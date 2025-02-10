@@ -1,4 +1,3 @@
-import { createRequire } from "module";
 import admin, { ServiceAccount } from "firebase-admin";
 import createLogger from "@config/logger";
 import serviceAccount from './turistiando-credentials.json';

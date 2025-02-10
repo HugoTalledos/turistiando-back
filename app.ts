@@ -11,13 +11,5 @@ new Server(app);
 const PORT: number = ServerConfig.port;
 
 app
-  .listen(PORT, "localhost", function () {
-    log.info(`Server is running on port ${PORT}.`);
-  })
-  .on("error", (err: any) => {
-    if (err.code === "EADDRINUSE") {
-      log.warn("Error: address already in use");
-    } else {
-      log.error(err);
-    }
-  });
+  .listen(PORT, "localhost", () => log.info(`Server is running on port ${PORT}.`))
+  .on("error", (err: Error) => log.error("Error iniciando servidor: ", err));
