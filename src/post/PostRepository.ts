@@ -1,4 +1,4 @@
-import { Post } from "./Post.types";
+import { Post, PostResponse } from "./Post.types";
 import { Collections } from "@util/constants";
 import firestoreRef from "@data/firestore";
 import createLogger from "@config/logger";
@@ -7,7 +7,7 @@ import { PageRequest } from "@models/Page.types";
 const log = createLogger({ fileName: 'PostRepository' });
 
 export class PostRepository {
-  static async getByCategoryId(categoryId: string, pageRequest: PageRequest | null): Promise<Array<Post> | null> {
+  static async getByCategoryId(categoryId: string, pageRequest: PageRequest | null): Promise<Array<PostResponse> | null> {
     try {
       if (firestoreRef === null) {
         log.error("Fallo en la conexión a bd");

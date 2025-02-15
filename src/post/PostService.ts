@@ -3,6 +3,7 @@ import createLogger from "@config/logger";
 import { PostRepository } from "./PostRepository";
 import { successQuery, APIResponse, failQuery, declinedQuery, notResultFound } from "@models/APIResponse.types";
 import { PageRequest } from "@models/Page.types";
+import { GenericObject, ScheduleObject } from "@models/GenericObject.types";
 const log = createLogger({ fileName: "PostService " });
 
 export const getPost = async ({ slug }: { slug: string }): Promise<APIResponse<PostResponse | null>> => {
@@ -15,15 +16,17 @@ export const getPost = async ({ slug }: { slug: string }): Promise<APIResponse<P
       return declinedQuery("Slug incorrecta");
     }
 
-    const { isDeleted, ...all } = postEntity;
+    const { isDeleted, schedule, ...all } = postEntity;
 
-      if (isDeleted) {
-        log.warn(`Post con slug ${slug} eliminado de bd`);
-        return notResultFound();
-      }
+    const isOpen = checkSchedule(schedule);
+
+    if (isDeleted) {
+      log.warn(`Post con slug ${slug} eliminado de bd`);
+      return notResultFound();
+    }
 
     log.info("Post encontrado exitosamente");
-    return successQuery(all);
+    return successQuery({ schedule, ...all, isOpen });
   } catch (e) {
     log.error(e);
     return failQuery();
@@ -46,8 +49,10 @@ export const getPostByCategory = async ({ categoryId, page }: { categoryId: stri
       return notResultFound();
     }
 
-    log.info("Post encontrados: ", postList.length);
-    return successQuery<PostResponse[]>(postList);
+    const newPostList = postList.map(({ schedule, ...all }) =>({...all, isOpen: checkSchedule(schedule), schedule }));
+
+    log.info("Post encontrados: ", newPostList.length);
+    return successQuery<PostResponse[]>(newPostList);
   } catch (e) {
     log.error(e);
     return failQuery();
@@ -61,7 +66,7 @@ export const countLikesForPost = async ({ postId, state }: { postId: string, sta
     if (!updateStatus) {
       log.warn("Fallo en la actualización de likes del post: ", postId);
       return failQuery();
-    }  
+    }
 
     log.info("Likes actualizados correctamente");
     return successQuery(true);
@@ -70,3 +75,40 @@ export const countLikesForPost = async ({ postId, state }: { postId: string, sta
     return failQuery();
   }
 }
+
+
+const checkSchedule = (scheduleList: ScheduleObject[]): boolean => {
+  const date = new Date()
+  const day = date.getDay()
+  const { schedule: currentSchedule = null } = scheduleList[day - 1] || {};
+
+  if (!currentSchedule) return false;
+
+  const [time1, time2] = currentSchedule.toString().split("-");
+  const formatedFirstHour = parseAMPM(time1);
+  const formatedSecondHour = parseAMPM(time2.trimStart())
+  const curretHour = date.getHours();
+  const currentMinutes = date.getMinutes();
+
+  const totalMinutesFirst = formatedFirstHour.hours * 60 + formatedFirstHour.minutes;
+  const totalMinutesCurrent = curretHour * 60 + currentMinutes;
+  const totalMinutesSecond = formatedSecondHour.hours * 60 + formatedSecondHour.minutes;
+  
+  const isWithinRange = totalMinutesFirst < totalMinutesCurrent && totalMinutesCurrent < totalMinutesSecond;
+
+  return isWithinRange;
+}
+
+const parseAMPM = (timeStr: string) => {
+  const [time, modifier] = timeStr.split(" ");
+  let [hours, minutes] = time.split(":").map(Number);
+
+  if (modifier === "PM" && hours !== 12) {
+    hours += 12;
+  }
+  if (modifier === "AM" && hours === 12) {
+    hours = 0;
+  }
+
+  return { hours, minutes };
+};
