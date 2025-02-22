@@ -1,6 +1,7 @@
 export interface GenericObject {
     key: string,
-    value: object
+    value: object,
+    alias?: string
 }
 
 export interface ScheduleObject {
