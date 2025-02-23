@@ -7,6 +7,24 @@ import { PageRequest } from "@models/Page.types";
 const log = createLogger({ fileName: 'PostRepository' });
 
 export class PostRepository {
+
+  static async getAllPosts(): Promise<Array<PostResponse> | null> {
+    try {
+      if (firestoreRef === null) {
+        log.error("Fallo en la conexión a bd");
+        return null;
+      }
+
+      const collection = firestoreRef.collection(Collections.POST_COLLECTION);
+      const dbResponse = await collection.get();
+
+      return dbResponse.docs.map((doc) => doc.data() as Post);
+    } catch (e) {
+      log.info("Error en conexión a bd");
+      return null;
+    }
+  }
+
   static async getByCategoryId(categoryId: string, pageRequest: PageRequest | null): Promise<Array<PostResponse> | null> {
     try {
       if (firestoreRef === null) {

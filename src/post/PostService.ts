@@ -77,6 +77,28 @@ export const countLikesForPost = async ({ postId, state }: { postId: string, sta
 }
 
 
+export const getRandomPost = async (): Promise<APIResponse<PostResponse | null>> => {
+  try {
+    log.info("Buscando posts");
+    const allPosts = await PostRepository.getAllPosts();
+
+    if (!allPosts || allPosts.length <= 0) {
+      log.warn("No se encontraron resultados en la bd");
+      return failQuery();
+    }
+
+    const sizeList = allPosts.length;
+    log.info("Posts encontrados: ", sizeList)
+    const randomNumber = Math.floor(Math.random() * sizeList);
+    log.info("Numero aleatorio generado: ", randomNumber);
+
+    return successQuery(allPosts[randomNumber]);
+  } catch (e) {
+    log.error("Error innesperado: ", e);
+    return failQuery();
+  }
+}
+
 const checkSchedule = (scheduleList: ScheduleObject[]): boolean => {
   const date = new Date()
   const day = date.getDay()

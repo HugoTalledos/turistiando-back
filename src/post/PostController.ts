@@ -1,7 +1,7 @@
 import express from "express";
 import { Messages } from "@util/constants";
 import createLogger from "@config/logger";
-import { countLikesForPost, getPost, getPostByCategory } from "./PostService";
+import { countLikesForPost, getPost, getPostByCategory, getRandomPost } from "./PostService";
 
 const log = createLogger({ fileName: 'PostController '});
 
@@ -30,6 +30,13 @@ router.put("/like", async (req, res) => {
     const response = await countLikesForPost(req.body);
     res.status(response.code).send(response);
     log.info(Messages.END_SERVICE, Messages.COUNTER_LIKES);
+})
+
+router.get("/random", async (_, res) => {
+    log.info(Messages.START_SERVICE, Messages.GET_RANDOM_POST);
+    const response = await getRandomPost();
+    res.status(response.code).send(response);
+    log.info(Messages.END_SERVICE, Messages.GET_RANDOM_POST);
 })
 
 export const postController = router;

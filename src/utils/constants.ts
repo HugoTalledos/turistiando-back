@@ -5,7 +5,8 @@ export const Messages = {
     GET_POST: "Consulta de post por slug -------",
     GET_POSTS_BY_CATEGORY: "Lista de post por categoria -------",
     COUNTER_LIKES: "Aumento / disminución de likes -------",
-    GET_CATEGORIES: "Lista de categorias -------"
+    GET_CATEGORIES: "Lista de categorias -------",
+    GET_RANDOM_POST: "Obtener random post -------"
 }
 
 export const Collections = {
